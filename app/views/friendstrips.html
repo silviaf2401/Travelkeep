@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+    <script type="text/javascript" src="/static/js/fbsdk.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/dashboard">
+            <img alt="Brand" style="height:50px;" src="/static/img/logo.png">
+          </a>
+        </div>
+        <div class="navProfileImg">
+          <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{session['name']}} <img src="{{session['picture']}}" alt="" /> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">My Profile</a></li>
+              <li role="separator" class="divider"></li>
+              {% if session['untoken'] %}
+                <li><a href="https://www.facebook.com/logout.php?next=http://localhost:5000/&access_token={{session['untoken']}}">Logout</a></li>
+              {% else %}
+                <li><a href="/logout">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+      </div>
+    </nav>
+    <!-- end Nav Bar  -->
+
+    <!-- Right vertical menu nav -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>Welcome {{session['name']}}!</h3>
+        </div>
+        <div class="col-md-2">
+          <!-- cal stuff here -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 mainMenu">
+          <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><a href="/dashboard">My dashboard</a></li>
+            <li role="presentation"><a href="/ongoingtrip">Current trip</a></li>
+            <li role="presentation"><a href="/dashboard">Start new trip</a></li>
+            <li role="presentation"><a href="/tripsbydate">Trips by date</a></li>
+            <li role="presentation"><a href="/favoritetrips">Favorite trips</a></li>
+            <li role="presentation"><a href="/milestraveled">Miles traveled</a></li>
+            <li role="presentation" ><a href="/addfriend">Share with friends</a></li>
+            <li role="presentation" class="active"><a href="/viewfriendstrips">View friends trips</a></li>
+          </ul>
+        </div>
+        <div class="col-md-10">
+
+          <h1>Welcome, {{session['name']}}</h1>
+
+          <table class="table table-striped">
+                  <tr>
+                    <th> Friend's name:</th>
+                    <th> Trip name: </th>
+                    <th> Trip's start date:</th>
+                    <th> Trip's end date:</th>
+                    <th> Trip's rating (1 to 5 stars):</th>
+                    <th> Trip's destination:</th>
+                  </tr>
+
+                    {% for element in friendstrips %}
+                    <tr>
+                          <td> {{element['first_name']}} {{element['last_name']}}</td>
+                          <td> {{element['name']}}</td>
+                          <td> {{element['start_date']}}</td>
+                          <td> {{element['end_date']}}</td>
+                          <td> {{element['rating']}}</td>
+                          <td>{{element['end_location']}}</td>
+
+                    </tr>
+                    {%endfor%}
+             </table>
+           </div>
+           </body>
+         </html>

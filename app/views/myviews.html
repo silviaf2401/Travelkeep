@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+	<div style="border: 2px solid black; width:400px; height:600px; display:inline-block; font-size:200%; font-family:cursive; text-align:center; padding:10px; float:left; display:relative;">
+			</h1 style="display:block;">Hello {{name}}</h1>
+			<p style="border: 3px solid black; margin-right:0px; padding: 0px;"> My dashboard </p>
+			<p style="border: 3px solid black;"> Recent trips </p>
+			<p style="border: 3px solid black;"> Miles traveled </p>
+			<p style="border: 3px solid black;"	>Share with friends</p>
+			<p style="border: 3px solid black;"	>Favorite trips</p>
+	</div>
+	<div class="col-md-10">
+
+
+	{%for i in miles%}
+		<div style="text-align:center; padding:10px; margin-left:20px; float:left;">
+		<h3>{{i['name']}}</h3>
+		<p>Start:{{i['start_date']}}</p>
+		<p>End:{{i['end_date']}}</p>
+		<!--Participants???-->
+		<p>Miles:{{i['trip_miles']}}</p>
+		<p>Trip rating: {{i['rating']}}</p>
+		<p>Miles:{{i['trip_miles']}}</p>
+		<p>Start Location: {{i['start_location']}}</p>
+		<p>End Location: {{i['end_location']}}</p>
+
+		</div>
+	{%endfor%}
+	</div>
+	</body>
+</html>

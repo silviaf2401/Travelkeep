@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+    <script type="text/javascript" src="/static/js/fbsdk.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/dashboard">
+            <img alt="Brand" style="height:50px;" src="/static/img/logo.png">
+          </a>
+        </div>
+        <div class="navProfileImg">
+          <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{session['name']}} <img src="{{session['picture']}}" alt="" /> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">My Profile</a></li>
+              <li role="separator" class="divider"></li>
+              {% if session['untoken'] %}
+                <li><a href="https://www.facebook.com/logout.php?next=http://localhost:5000/&access_token={{session['untoken']}}">Logout</a></li>
+              {% else %}
+                <li><a href="/logout">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+      </div>
+    </nav>
+    <!-- end Nav Bar  -->
+    <!-- Right vertical menu nav -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>Welcome {{session['name']}}!</h3>
+        </div>
+        <div class="col-md-2">
+          <!-- cal stuff here -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 mainMenu">
+          <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active"><a href="/dashboard">My dashboard</a></li>
+            <li role="presentation"><a href="/ongoingtrip">Current trip</a></li>
+            <li role="presentation"><a href="/dashboard">Start new trip</a></li>
+            <li role="presentation"><a href="/tripsbydate">Trips by date</a></li>
+            <li role="presentation"><a href="/favoritetrips">Favorite trips</a></li>
+            <li role="presentation"><a href="/milestraveled">Miles traveled</a></li>
+            <li role="presentation"><a href="/addfriend">Share with friends</a></li>
+            <li role="presentation"><a href="/viewfriendstrips">View friends trips</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div id ="middle">
+          <h3>Ready to take a new trip?</h3>
+          <br><br>
+            <form action="/createtrip" method="post">
+              <br><label for="trip_name">Trip Name:<input type="text" name="trip_name" id="trip_name"></label>
+              <br>Select Starting Point: <input type="text" name="start_loc">
+                <br>Starting Date: <input type="date" name="start_date">
+              <br>Select Ending Point: <input type="text" name="end_loc">
+                <br>End Date: <input type="date" name="end_date">
+              <input type="hidden" name="participant" id="participantInput" value="{{session['id']}}" readonly>
+                <br>
+                <input type="submit" value="Start Trip Now">
+          </form>
+          </div>
+        </div>  <!--end container 10 div -->
+        <div class="col-md-4">
+          <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Add Participant
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                {% for participant in allParticipants %}
+                  <li><a href="#" onclick="addParticipant({{participant['id']}});"><img src="{{participant['picture']}}" style="border: solid #0f866b 4px;border-radius: 30px;height: 50px;margin-left: 12px;" alt="" /> {{participant['first_name']}} {{participant['last_name']}}</a></li>
+                  <li role="separator" class="divider"></li>
+                {% endfor %}
+              </ul>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            function addParticipant(id){
+              $('#participantInput').val($('#participantInput').val() + ',' + id);
+            }
+        </script>
+  </body>
+</html>

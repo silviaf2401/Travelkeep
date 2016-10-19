@@ -1,0 +1,123 @@
+<!DOCTYPE html5>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Month of Travel', 'Miles'],
+          ['January', {{milestraveled[0]}}],
+          ['February', {{milestraveled[1]}}],
+          ['March', {{milestraveled[2]}}],
+          ['April', {{milestraveled[3]}}],
+          ['May', {{milestraveled[4]}}],
+          ['June', {{milestraveled[5]}}],
+          ['July', {{milestraveled[6]}}],
+          ['August', {{milestraveled[7]}}],
+          ['September', {{milestraveled[8]}}],
+          ['October', {{milestraveled[9]}}],
+          ['November',{{milestraveled[10]}}],
+          ['December',{{milestraveled[11]}}]
+        ]);
+
+        var options = {
+          title: 'Miles traveled for {{session['rating']}} star trips taken from {{session['start_date']}} to {{session['end_date']}}',
+          hAxis: {title: 'Month of travel',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+  </head>
+
+  <body>
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/dashboard">
+            <img alt="Brand" style="height:50px;" src="/static/img/logo.png">
+          </a>
+        </div>
+        <div class="navProfileImg">
+          <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{session['name']}} <img src="{{session['picture']}}" alt="" /> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">My Profile</a></li>
+              <li role="separator" class="divider"></li>
+              {% if session['untoken'] %}
+                <li><a href="https://www.facebook.com/logout.php?next=http://localhost:5000/&access_token={{session['untoken']}}">Logout</a></li>
+              {% else %}
+                <li><a href="/logout">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+      </div>
+    </nav>
+    <!-- end Nav Bar  -->
+
+    <!-- Right vertical menu nav -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>Welcome {{session['name']}}!</h3>
+        </div>
+        <div class="col-md-2">
+          <!-- cal stuff here -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 mainMenu">
+          <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><a href="/dashboard">My dashboard</a></li>
+            <li role="presentation"><a href="/ongoingtrip">Current trip</a></li>
+            <li role="presentation"><a href="/dashboard">Start new trip</a></li>
+            <li role="presentation"><a href="/tripsbydate">Trips by date</a></li>
+            <li role="presentation"><a href="/favoritetrips">Favorite trips</a></li>
+            <li role="presentation" class="active"><a href="/milestraveled">Miles traveled</a></li>
+            <li role="presentation"><a href="/addfriend">Share with friends</a></li>
+            <li role="presentation"><a href="/viewfriendstrips">View friends trips</a></li>
+          </ul>
+        </div>
+        <div class="col-md-10">
+
+          <div id ="rightsection"><div><h4> Enter a date range, then click "view miles traveled" to view the miles traveled for a given date range:</h4></div>
+          <div><form action='/calculatemilestraveled' method='post'>
+            <div><label>Select trips ranging from:</label></div><input class ="btn btn-default" type ='date' name ='startdate'>
+            <div><label>To:</label></div><div><input class ="btn btn-default" type ='date' name ='enddate'></div></div>
+            <div><label> Filter by trip rating: <label> <select class ="btn btn-default" name='rating'><option value ='1'>One Star</option> <option value ='2'>Two Stars</option><option value='3'>Three Stars</option><option value ='4'>Four Stars</option><option value='5'>Five Stars</option></select></div>
+             <div><input id="bttn" type='Submit' value='VIEW MILES TRAVELED'></div>
+
+          </form>
+
+            <!--Div that will hold the pie chart-->
+           <div id="chart_div"></div>
+
+          <table id='placesvisited'>
+                <tr>
+                  <td> Places visited: </td>
+                </tr>
+                {%for element in pruned_places_visited %}
+                <tr>
+                    <td>{{element['end_location']}}</td>
+                </tr>
+                {%endfor%}
+              </table>
+          </div>
+        </div>
+
+
+
+  </body>
+</html>

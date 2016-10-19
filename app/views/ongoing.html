@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+    <script type="text/javascript" src="/static/js/fbsdk.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/dashboard">
+            <img alt="Brand" style="height:50px;" src="/static/img/logo.png">
+          </a>
+        </div>
+        <div class="navProfileImg">
+          <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{session['name']}} <img src="{{session['picture']}}" alt="" /> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">My Profile</a></li>
+              <li role="separator" class="divider"></li>
+              {% if session['untoken'] %}
+                <li><a href="https://www.facebook.com/logout.php?next=http://localhost:5000/&access_token={{session['untoken']}}">Logout</a></li>
+              {% else %}
+                <li><a href="/logout">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+
+      </div>
+    </nav>
+    <!-- end Nav Bar  -->
+    <!-- Right vertical menu nav -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>Welcome {{session['name']}}!</h3>
+        </div>
+        <div class="col-md-2">
+          <!-- cal stuff here -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 mainMenu">
+          <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><a href="/dashboard">My dashboard</a></li>
+            <li role="presentation"  class="active"><a href="/ongoingtrip">Current trip</a></li>
+            <li role="presentation"><a href="/dashboard">Start new trip</a></li>
+            <li role="presentation"><a href="/tripsbydate">Trips by date</a></li>
+            <li role="presentation"><a href="/favoritetrips">Favorite trips</a></li>
+            <li role="presentation"><a href="/milestraveled">Miles traveled</a></li>
+            <li role="presentation"><a href="/addfriend">Share with friends</a></li>
+            <li role="presentation"><a href="/viewfriendstrips">View friends trips</a></li>
+          </ul>
+        </div>
+        <div class="col-md-10">
+
+      <div id ="middle">
+<!-- <h2>{{ info_l }}</h2> -->
+    <p>You're currently in a trip from {{ info_l[0][0]['start_location'] }} to {{ info_l[0][0]['end_location'] }} </p>
+    <p>Estimated trip distance: {{ t_dist }}</p>
+    <p>Estimated Trip Time: {{ t_time }}</p>
+    <p>Trip participants: </p>
+    <p>{{ info_l[1][0]['first_name'] }} {{ info_l[1][0]['last_name'] }}
+    <br><br>
+      <form action="/upload/photo" method="post" enctype="multipart/form-data">
+        <input type="file" name="photo"><br /><br />
+        <input type="submit" value="Load a picture">
+      </form>
+      <form action="/upload/video" method="post" enctype="multipart/form-data">
+        <input type="file" name="video"><br /><br />
+        <input type="submit" value="Load a video">
+      </form>
+</div>
+      <form action="/completetrip" method="post">
+              <br><label>Submit rating:</label>
+<!--   <textarea name="comment_text" rows="2" cols="40"></textarea>
+        <br>Submit Score: <input list="score" name="score">
+          <datalist id="score">
+            <option value="1">
+            <option value="2">
+            <option value="3">
+            <option value="4">
+            <option value="5">
+          </datalist> -->
+          <br>
+  <input type="radio" name="score" value="5" checked>5<br>
+  <input type="radio" name="score" value="4">4<br>
+  <input type="radio" name="score" value="3">3<br>
+  <input type="radio" name="score" value="2">2<br>
+  <input type="radio" name="score" value="1">1<br>
+
+
+        <br><br><input type="submit" value="Mark Trip Complete">
+    </form>
+  </div>
+
+  </body>
+</html>

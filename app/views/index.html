@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style media="screen">
+      html {
+            background: url(/static/img/hiking-mountain.png) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            }
+    </style>
+  </head>
+  <body>
+   <script>
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+      console.log('statusChangeCallback');
+      console.log(response);
+      // The response object is returned with a status field that lets the
+      // app know the current login status of the person.
+      // Full docs on the response object can be found in the documentation
+      // for FB.getLoginStatus().
+      if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        loginCheck(response.authResponse.accessToken);//unsafe way of handeling token via port 80
+      } else if (response.status === 'not_authorized') {
+        // The person is logged into Facebook, but not your app.
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into this app.';
+      } else {
+        // The person is not logged into Facebook, so we're not sure if
+        // they are logged into this app or not.
+        document.getElementById('status').innerHTML = 'Have a Facebook account?';
+      }
+    }
+
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1588220744810807',
+      cookie     : true,  // enable cookies to allow the server to access
+                          // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.7' // use graph api version 2.5
+    });
+
+    // Now that we've initialized the JavaScript SDK, we call
+    // FB.getLoginStatus().  This function gets the state of the
+    // person visiting this page and can return one of three states to
+    // the callback you provide.  They can be:
+    //
+    // 1. Logged into your app ('connected')
+    // 2. Logged into Facebook, but not your app ('not_authorized')
+    // 3. Not logged into Facebook and can't tell if they are logged into
+    //    your app or not.
+    //
+    // These three cases are handled in the callback function.
+
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  function loginCheck(fbtoken) {
+         console.log('Welcome!  Fetching your information.... ');
+         FB.api('/me?fields=id,first_name,last_name,email,picture', function(response) {
+
+           console.log(response)
+           document.getElementById('FBid').value = response.id;
+           document.getElementById('FBfirst_name').value = response.first_name;
+           document.getElementById('FBlast_name').value = response.last_name;
+           document.getElementById('FBemail').value = response.email;
+           document.getElementById('FBpicture').value = response.picture.data.url;
+           document.getElementById('FBtoken').value = fbtoken
+
+           document.getElementById('fbLogin').submit();
+
+         });
+  }
+  </script>
+  {% with messages = get_flashed_messages() %}
+       {% if messages %}
+         {% for message in messages %}
+            <div class="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+              {{message}}
+            </div>
+         {% endfor %}
+       {% endif %}
+  {% endwith %}
+
+  <div class="modal fade" id="regModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title">Registration</h4>
+          </div>
+          <div class="modal-body">
+              <form action='/regcheck' method="POST" id="registerForm">
+                <div><label> First Name: </label> <input id='fn' type='text' name='firstname'> </div>
+                <div><label> Last Name: </label> <input id='ln' type='text' name = 'lastname'></div>
+                <div><label> E-mail:</label> <input id='em'type='text' name ='regemail'></div>
+                <div><label> Password: </label> <input id='pw' type='text' name ='regpassword'></div>
+                <div><label> Confirm password: </label> <input id='cpw' type='text' name ='regconfpassword'></div>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <a href="#" onclick="document.getElementById('registerForm').submit();"><button type="button" class="btn btn-primary">Register</button></a>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+  <div class="loginForm">
+    <img src="/static/img/logo.png" style="padding-top:25px" alt="" />
+    <div class="logincontain">
+      <form action ='/logincheck' method ="POST" id="loginForm">
+         <div><label> E-mail:</label> <input type='text' name ='loginemail'></div>
+         <div><label> Password: </label> <input type='text' name ='loginpassword'></div>
+      </form>
+
+
+      <form action="/fbcheck" method="post" id="fbLogin">
+        <p><input type="hidden" name="FBid" id="FBid" value=""></p>
+            <!-- very unsafe of handeling token over port80 -->
+        <p><input type="hidden" name="FBtoken" id="FBtoken" value=""></p>
+        <p><input type="hidden" name="FBfirst_name" id="FBfirst_name" value=""></p>
+        <p><input type="hidden" name="FBlast_name" id="FBlast_name" value=""></p>
+        <p><input type="hidden" name="FBemail" id="FBemail" value=""></p>
+        <p><input type="hidden" name="FBpicture" id="FBpicture" value=""></p>
+      </form>
+
+      <a href="#" onclick="document.getElementById('loginForm').submit();"><button type="button" class="btn btn-default btn">
+        Login
+      </button></a>
+      <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#regModal">
+        Register
+      </button>
+      <br>
+      <br>
+      <div id="status">
+      </div>
+      <div class="fb-login-button"  data-size="medium" data-auto-logout-link="true" data-scope="public_profile,email" onlogin="checkLoginState();"></div>
+    </div>
+  </div>
+  </body>
+</html>

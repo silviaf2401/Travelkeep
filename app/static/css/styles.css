@@ -1,0 +1,157 @@
+body{
+  margin: 25px;
+  background-color: transparent !important;
+
+}
+
+a {
+  color: #068266 !important;
+}
+
+.loginForm{
+  background-color: rgba(255, 255, 255, 0.44);
+  position: absolute;
+  border: rgba(255, 255, 255, 0.76) 14px solid;
+  border-radius: 10px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 50%;
+  padding: 20px;
+  color: #4e4e4e;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.loginContain{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 40%;
+  height: 50%;
+
+  padding: 20px;
+  text-align: center;
+
+}
+
+/*Nav bar profile image*/
+.navProfileImg img{
+  border: solid #0f866b 4px;
+  border-radius: 30px;
+  height: 50px;
+  margin-left: 12px;
+}
+
+/*alert box (flash)*/
+/* The alert message box */
+.alert {
+    padding: 20px;
+    background-color: rgba(244, 67, 54, 0.3); /* Red */
+    color: white;
+    margin: 15px;
+    width: 20%;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
+
+/*trip item*/
+.tripItem{
+  margin: 25px;
+  padding: 20px;
+  background-color: #efefef;
+}
+
+
+
+/*MIXINS styles*/
+
+.mixItems:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+}
+
+.mixItems .mix,
+.mixItems .gap {
+  display: inline-block;
+  width: 49%;
+  overflow: hidden;
+}
+
+.mixItems .mix {
+  text-align: left;
+  background-color: #f7f7f7;
+  margin-bottom: 2%;
+  display: none;
+}
+
+.mixItems .mix.gridView img {
+  width: 100%;
+  display: block;
+}
+
+.mixItems .mix.listView img {
+  display: none;
+}
+
+.mixItems .mix .abstract {
+  color: #000;
+  font-size: 12px;
+  padding: 0 1.5em 1.5em 1.5em;
+}
+
+.mixItems .mix .newsHead {
+  color: #666;
+  font-size: 12px;
+  padding: 1.5em 1.5em 0 1.5em;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+@media all and (min-width: 420px) {
+  .mixItems .mix,
+  .mixItems .gap {
+    width: 32%;
+  }
+}
+
+@media all and (min-width: 640px) {
+  .mixItems .mix,
+  .mixItems .gap {
+    width: 27.5%;
+  }
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+    color: #fff !important;
+    background-color: #068266 !important;
+}
+
+.max{
+	background-color: #068266 !important;
+}
+
+
+span{
+		font-color:red; 
+}
